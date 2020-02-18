@@ -1,0 +1,94 @@
+import random
+import tkinter
+from tkinter import messagebox
+
+def salir():
+     window.destroy()
+
+
+
+def ingresar():
+    letra=txt_letra.get()
+    letra=letra.upper()
+    print(palabra)
+    print(palabra_inicial)
+    if (letra.isalpha() and (len(letra)>0 and len(letra)<2))and not(letra in palabra_inicial):
+        if letra in palabra:
+            contador=0
+            for i in palabra:
+                 if palabra[contador]== letra:
+
+                       palabra_inicial[contador]= letra
+
+                 contador=contador+1
+
+            lbl_palabra_elegida = tkinter.Label(window, text='{}'.format(" ".join(palabra_inicial)), font="tahoma 25")
+            lbl_palabra_elegida.grid(column=1, row=1, pady=50)
+
+            if not '_' in palabra_inicial:
+                messagebox.showinfo("FIN DE JUEGO", "GANASTE!!!")
+                window.destroy()
+
+            txt_letra.delete(0,tkinter.END)
+
+        else:
+            fallos.append("F")
+            cantfallos=len(fallos)
+
+            if cantfallos ==1:
+                  palo.create_oval(175,55,225,100,width=4,fill="red")
+            elif cantfallos==2:
+                  palo.create_line(200,100,200,200, width=8)
+            elif cantfallos==3:
+                  palo.create_line(150,150,200,100, width=8)
+            elif cantfallos==4:
+                  palo.create_line(200,100,250,150, width=8)
+            elif cantfallos==5:
+                  palo.create_line(200,200,250,250, width=8)
+            elif cantfallos>=6:
+                  palo.create_line(150,250,200,200, width=8)
+                  messagebox.showerror("FIN DE JUEGO","AHORCADO!!!")
+                  window.destroy()
+
+            txt_letra.delete(0,tkinter.END)
+
+    else:
+        messagebox.showerror("ERROR","El ingreso no es valido")
+        txt_letra.delete(0, tkinter.END)
+
+
+
+window=tkinter.Tk()
+window.title("AHORCADO")
+window.geometry("1000x500")
+
+fallos = []
+palabra=random.choice(["HOLA","CHAU"])
+palabra_inicial=len(palabra)*["_"]
+
+lbl_palabra_elegida = tkinter.Label(window, text='{}'.format(" ".join(palabra_inicial)), font="tahoma 25")
+lbl_palabra_elegida.grid(column=1, row=1, pady=50)
+
+lbl_titulo=tkinter.Label(window,text="JUEGO DEL AHORCADO",font="tahoma 30",fg="white",bg="blue",padx=50)
+lbl_titulo.grid(column=0,row=0,columnspan=2,padx=100)
+
+palo=tkinter.Canvas()
+palo.create_line(50,50,50,300,fill="brown",width=20)
+palo.create_line(40,50,200,50,fill="brown",width=10)
+palo.grid(column=0,row=1)
+
+txt_letra=tkinter.Entry(window,font="arial,30",width=5,bg="light green")
+txt_letra.grid(column=1,row=2)
+txt_letra.focus()
+
+btn_ingresar=tkinter.Button(window,text="Ingresar letra",font="arial 15",bg="red",fg="white",command=ingresar)
+btn_ingresar.grid(column=1,row=3,pady=5,padx=40)
+
+
+btn_salir=tkinter.Button(window,text="Salir",font="arial 15",bg="orange",command=salir)
+btn_salir.grid(column=0,row=3)
+
+
+window.mainloop()
+
+
